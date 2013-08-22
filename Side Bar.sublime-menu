@@ -1,0 +1,9 @@
+[
+        {"caption": "-"},
+        {"caption": "Python Coverage",
+                "children": [
+                        { "caption": "Force coverage reset", "command": "show_python_coverage" }
+                ]
+        }
+]
+

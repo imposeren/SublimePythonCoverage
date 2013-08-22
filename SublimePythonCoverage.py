@@ -7,26 +7,28 @@ if not os.path.exists(os.path.join(plugin_path, 'coverage')):
 
     from StringIO import StringIO
     import tarfile
-    import urllib
     from hashlib import md5
+    from package_control.download_manager import DownloadManager
 
-    SOURCE = 'http://pypi.python.org/packages/source/c/coverage/coverage-3.5.2.tar.gz'
-    MD5SUM = '28c43d41b13f8987ea14d7b1d4a4e3ec'
 
-    payload = urllib.urlopen(SOURCE).read()
+    SOURCE = 'https://pypi.python.org/packages/source/c/coverage/coverage-3.6.tar.gz'
+    MD5SUM = '67d4e393f4c6a5ffc18605409d2aa1ac'
+
+    downloader = DownloadManager({'user_agent': 'package_control'})
+    payload = downloader.fetch(SOURCE, "coverage is not downloadable")
+
     if md5(payload).hexdigest() != MD5SUM:
         raise ImportError('Invalid checksum.')
 
     tar = tarfile.open(mode='r:gz', fileobj=StringIO(payload))
     for m in tar.getmembers():
-        if not m.name.startswith('coverage-3.5.2/coverage/'):
+        if not m.name.startswith('coverage-3.6/coverage/'):
             continue
         m.name = '/'.join(m.name.split('/')[2:])
         tar.extract(m, os.path.join(plugin_path, 'coverage'))
 
     print 'SublimePythonCoverage successfully installed coverage.py.'
 # end bootstrap
-
 
 import sublime
 import sublime_plugin
