@@ -51,7 +51,10 @@ def find(base, rel, access=os.R_OK):
 
 
 def find_cmd(base, cmd):
-    return find(base, ('bin', cmd), os.X_OK)
+    result = find(base, ('bin', cmd), os.X_OK)
+    if not result:
+        result = find(base, ('.env', 'bin', cmd), os.X_OK)
+    return result
 
 
 def find_tests(fname):
